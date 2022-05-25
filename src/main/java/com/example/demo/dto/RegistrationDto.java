@@ -1,7 +1,6 @@
 package com.example.demo.dto;
 
 import lombok.*;
-import org.springframework.beans.factory.annotation.Value;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -39,8 +38,6 @@ public class RegistrationDto {
     private String city;
 
     private String address;
-
-    private String address2;
 
     private String zip;
 

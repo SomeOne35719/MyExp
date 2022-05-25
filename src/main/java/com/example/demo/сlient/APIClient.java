@@ -1,21 +1,20 @@
 package com.example.demo.сlient;
 
-import com.example.demo.dto.RegistrationDto;
-import com.example.demo.dto.Response;
-import com.example.demo.dto.Response2;
+import com.example.demo.FeignSupportConfig;
 import com.example.demo.dto.UploadDocumentDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.*;
 
 @FeignClient(name = "myFeign",
-            url = "${demo.external.link}")
+            url = "${demo.external.link}",
+            configuration = {FeignSupportConfig.class/*- MultipartJackson2HttpMessageConverter.class*/})
 public interface APIClient {
 
-    @PostMapping( value = "/auth/base-check", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = "text/plain;charset=utf-8")
-    Response registrationStart(RegistrationDto dto);
+    @PostMapping( value = "/auth/base-check", consumes = MediaType.ALL_VALUE,  produces = MediaType.TEXT_PLAIN_VALUE)
+    String registrationStart(String json);
 
-    @PostMapping(value = "/auth/send-document", consumes = "application/json")
-    Response2 uploadDocuments(UploadDocumentDto dto);
+    @PostMapping(value = "/auth/send-document", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    String uploadDocuments(@RequestPart UploadDocumentDto dto);
+
 }
